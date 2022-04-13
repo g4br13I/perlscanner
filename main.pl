@@ -25,13 +25,15 @@ _._\\,\'  ,\'__,\'      /  _\\    / \\   .\'
 
 EOF
 
-if($#ARGV+1 != 1) { die "\033[91m[-]\033[0m perl $0 <host>\n"; }
-@portas = (21,22,23,25,53,110,145,80,443,135,137,139,445,1433,3306,3389,5900);
+if($#ARGV+1 != 1) {
+        die "\033[91m[-]\033[0m perl $0 <host>\n";
+}
+print "\033[93m[i]\033[0m scanning ports\n";
+my @portas = (1..65535);
 foreach $p (@portas) {
+        $nome = getservbyport($p,"tcp");
         $c = IO::Socket::INET->new(PeerAddr => $h, PeerPort => $p, Proto => "tcp", Timeout => 1);
         if($c){
-                print "\033[92m[+]\033[0m port ",$p," open\n";
-        } else {
-                print "\033[91m[-]\033[0m port ",$p," closed\n";
+                print "\033[92m[+]\033[0m port ",$p," (",$nome,") open\n";
         }
 }
